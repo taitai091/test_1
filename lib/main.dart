@@ -1,6 +1,7 @@
 //main.dart
 import 'package:demo/notifire/hp_notifire.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:demo/data/hp_data.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -19,13 +20,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends HookConsumerWidget {
-  const MyHomePage({
+  MyHomePage({
     Key? key,
   }) : super(key: key);
 
@@ -62,6 +63,17 @@ class MyHomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final animationController = useAnimationController(
+      duration: const Duration(seconds: 10),
+    );
+    useAnimation(animationController);
+    final percentage = animationController.value * 100;
+
+    useEffect(() {
+      animationController.repeat();
+      return () {};
+    }, const []);
+
     final _notifire = ref.watch(hpNotifireProvider.notifier);
     return Scaffold(
       appBar: AppBar(
